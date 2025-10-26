@@ -4,7 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Team Cronpy</title>
-    <meta name="description" content="チーム紹介ページ（素のHTML/CSS/JS）" />
+    <meta
+      name="description"
+      content="チーム紹介ページ（多言語対応・HTML/CSS/JS）"
+    />
     <style>
       :root {
         --bg: #0f1724;
@@ -26,9 +29,57 @@
         display: flex;
         flex-direction: column;
       }
+
+      /* 🌐 言語切替ボタン（改良版） */
+      #lang-toggle {
+        position: fixed;
+        top: 20px;
+        right: 40px; /* ← 少し内側に */
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(
+          90deg,
+          rgba(125, 211, 252, 0.25),
+          rgba(56, 189, 248, 0.25)
+        );
+        border: 1px solid rgba(125, 211, 252, 0.5);
+        color: #e6f3ff;
+        padding: 10px 18px;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 500;
+        backdrop-filter: blur(6px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+      }
+
+      #lang-toggle:hover {
+        background: linear-gradient(
+          90deg,
+          rgba(125, 211, 252, 0.45),
+          rgba(56, 189, 248, 0.45)
+        );
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(56, 189, 248, 0.25);
+      }
+
+      /* 📱 モバイル対応 */
+      @media (max-width: 640px) {
+        #lang-toggle {
+          position: relative;
+          right: auto;
+          top: auto;
+          margin: 20px auto 0;
+          display: inline-flex;
+        }
+      }
+
       .wrap {
         max-width: 980px;
-        margin: 40px auto;
+        margin: 60px auto 40px;
         padding: 24px;
         flex: 1;
       }
@@ -46,6 +97,8 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
+
+      /* 🧑‍💻 メンバー紹介 */
       .grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -76,22 +129,18 @@
         width: 64px;
         height: 64px;
         border-radius: 12px;
-        flex: 0 0 64px;
         overflow: hidden;
         background: #071226;
-        display: inline-grid;
+        display: grid;
         place-items: center;
-        animation: fadeIn 1s ease-in-out;
       }
       .avatar img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        display: block;
       }
       .meta {
         flex: 1;
-        min-width: 0;
       }
       .name {
         font-weight: 600;
@@ -110,7 +159,7 @@
       }
       .btn {
         display: inline-flex;
-        gap: 8px;
+        gap: 6px;
         align-items: center;
         padding: 6px 10px;
         border-radius: 8px;
@@ -125,6 +174,19 @@
         background: rgba(125, 211, 252, 0.15);
         transform: translateY(-2px);
       }
+
+      /* 💪 強み */
+      .strength-item {
+        margin-top: 24px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+      .strength-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
       footer {
         margin-top: auto;
         padding: 16px 24px;
@@ -136,64 +198,65 @@
         font-size: 0.9rem;
         color: var(--muted);
       }
-      @media (max-width: 520px) {
-        header {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        footer {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+
       @keyframes fadeUp {
         to {
           opacity: 1;
           transform: translateY(0);
         }
       }
-      svg.icon {
-        width: 18px;
-        height: 18px;
-        display: inline-block;
-        vertical-align: middle;
-      }
     </style>
   </head>
   <body>
+    <button id="lang-toggle">🇯🇵 日本語</button>
+
     <div class="wrap">
       <header>
         <h1>Team Cronpy</h1>
       </header>
 
       <main>
+        <!-- 🧑‍💻 メンバー紹介 -->
         <section id="team">
+          <h2 data-i18n="team_title">メンバー紹介</h2>
           <div class="grid" id="members"></div>
         </section>
 
+        <!-- 💪 チームの強み -->
+        <section id="strengths">
+          <h2 data-i18n="strengths_title">チームの強み</h2>
+          <div class="strength-item">
+            <h3 data-i18n="strength_1_title">高い技術力</h3>
+            <p data-i18n="strength_1_text">
+              最新の技術を素早く取り入れ、堅牢なシステムを構築します。
+            </p>
+          </div>
+          <div class="strength-item">
+            <h3 data-i18n="strength_2_title">迅速な対応</h3>
+            <p data-i18n="strength_2_text">
+              小規模ながらもフットワーク軽く、柔軟な開発が可能です。
+            </p>
+          </div>
+          <div class="strength-item">
+            <h3 data-i18n="strength_3_title">セキュリティ意識</h3>
+            <p data-i18n="strength_3_text">
+              セキュリティを第一に考えた設計とレビューを徹底しています。
+            </p>
+          </div>
+        </section>
+
+        <!-- 📩 問い合わせ -->
         <section id="contact">
-          <h2 style="margin-top: 28px">問い合わせ</h2>
-          <p>
-            メールでの問い合わせを受け付けます。下のボタンを押すとメールアプリが開きます。
+          <h2 data-i18n="contact_title">問い合わせ</h2>
+          <p data-i18n="contact_text">
+            ご相談がありましたら、下記のボタンまたはメールアドレスまでお問い合わせください。
           </p>
           <div class="contact">
-            <a id="mailto-btn" class="btn" href="#">メールで問い合わせ</a>
-            <span style="color: var(--muted); font-size: 0.9rem"
-              >または直接:
-              <a id="email-plain" class="email" href="#"
-                >cronpy@proton.com</a
-              ></span
-            >
+            <a id="mailto-btn" class="btn" href="#">📧 メールで問い合わせ</a>
+            <span style="color: var(--muted); font-size: 0.9rem">
+              または直接:
+              <a id="email-plain" class="email" href="#">cronpy@proton.com</a>
+            </span>
           </div>
         </section>
       </main>
@@ -210,11 +273,9 @@
       ];
 
       const contactEmail = "cronpy@proton.com";
-
       document.getElementById("year").textContent = new Date().getFullYear();
 
       const membersEl = document.getElementById("members");
-
       function createMemberCard(m, index) {
         const card = document.createElement("article");
         card.className = "card";
@@ -249,9 +310,7 @@
         gh.href = `https://github.com/${encodeURIComponent(m.username)}`;
         gh.target = "_blank";
         gh.rel = "noopener noreferrer";
-        gh.innerHTML = `
-          <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
-          <span style="margin-left:4px">@${m.username}</span>`;
+        gh.innerHTML = `🐙 @${m.username}`;
 
         links.appendChild(gh);
         meta.appendChild(name);
@@ -259,33 +318,80 @@
         meta.appendChild(links);
         card.appendChild(avatar);
         card.appendChild(meta);
-
         return card;
       }
-
-      teamMembers.forEach((m, i) => {
-        membersEl.appendChild(createMemberCard(m, i));
-      });
+      teamMembers.forEach((m, i) =>
+        membersEl.appendChild(createMemberCard(m, i))
+      );
 
       const mailtoBtn = document.getElementById("mailto-btn");
       const emailPlain = document.getElementById("email-plain");
-      mailtoBtn.href = `mailto:${encodeURIComponent(
-        contactEmail
-      )}?subject=${encodeURIComponent("お問い合わせ - Team Cronpy")}`;
-      emailPlain.href = `mailto:${encodeURIComponent(contactEmail)}`;
+      mailtoBtn.href = `mailto:${contactEmail}?subject=${encodeURIComponent(
+        "お問い合わせ - Team Cronpy"
+      )}`;
+      emailPlain.href = `mailto:${contactEmail}`;
       emailPlain.textContent = contactEmail;
 
-      window.addEventListener(
-        "error",
-        (e) => {
-          const target = e.target;
-          if (target && target.tagName === "IMG") {
-            target.src =
-              'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="100%" height="100%" fill="%23071a2b"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="36" fill="%23ffffff">?</text></svg>';
-          }
-        },
-        true
+      const observer = new IntersectionObserver(
+        (entries) =>
+          entries.forEach(
+            (e) => e.isIntersecting && e.target.classList.add("visible")
+          ),
+        { threshold: 0.1 }
       );
+      document
+        .querySelectorAll(".strength-item")
+        .forEach((el) => observer.observe(el));
+
+      const translations = {
+        en: {
+          team_title: "Team Members",
+          strengths_title: "Our Strengths",
+          contact_title: "Contact",
+          contact_text:
+            "You can contact us via email. Click the button below to open your mail app.",
+          strength_1_title: "Technical Excellence",
+          strength_1_text:
+            "We adopt new technologies quickly and build robust systems.",
+          strength_2_title: "Agile Response",
+          strength_2_text:
+            "Our compact team enables fast and flexible development.",
+          strength_3_title: "Security Mindset",
+          strength_3_text:
+            "We prioritize security in every stage of our process.",
+        },
+        ja: {
+          team_title: "メンバー紹介",
+          strengths_title: "チームの強み",
+          contact_title: "問い合わせ",
+          contact_text:
+            "ご相談がありましたら、下記のボタンまたはメールアドレスまでお問い合わせください。",
+          strength_1_title: "高い技術力",
+          strength_1_text:
+            "最新の技術を素早く取り入れ、堅牢なシステムを構築します。",
+          strength_2_title: "迅速な対応",
+          strength_2_text:
+            "小規模ながらもフットワーク軽く、柔軟な開発が可能です。",
+          strength_3_title: "セキュリティ意識",
+          strength_3_text:
+            "セキュリティを第一に考えた設計とレビューを徹底しています。",
+        },
+      };
+
+      let currentLang = "ja";
+      const toggleBtn = document.getElementById("lang-toggle");
+      toggleBtn.addEventListener("click", () => {
+        currentLang = currentLang === "ja" ? "en" : "ja";
+        document.documentElement.lang = currentLang;
+        toggleBtn.textContent =
+          currentLang === "ja" ? "🇯🇵 日本語" : "🇺🇸 English";
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (translations[currentLang][key]) {
+            el.textContent = translations[currentLang][key];
+          }
+        });
+      });
     </script>
   </body>
 </html>
